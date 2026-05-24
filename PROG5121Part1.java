@@ -58,7 +58,50 @@ public class PROG5121Part1 {
             return "Username or password incorrect, please try again.";
         }
     }
-
+    
+    //====================================Part 2: sendMessage method=========================================
+    public static void sendMessage(Scanner input) {
+        // Get and validate recipient cell number
+        System.out.print("Input recipient number (+27XXXXXXXXX): ");
+        String recipient = input.nextLine();
+        if (!Message.validateRecipientCell(recipient)) {
+            System.out.println("Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.");
+            return;
+        }
+        System.out.println("Cell phone number successfully captured.");
+ 
+        // Get and validate message text
+        System.out.print("Enter your message (max 250 characters): ");
+        String messageText = input.nextLine();
+        String lengthCheck = Message.validateMessageLength(messageText);
+        if (!lengthCheck.equals("Message sent")) {
+            System.out.println(lengthCheck);
+            return;
+        }
+        System.out.println(lengthCheck);
+ 
+        // Create the message object
+        Message msg = new Message(recipient, messageText);
+ 
+        // Display message details
+        System.out.println("\nMessage ID: " + msg.getMessageID());
+        System.out.println("Message Hash: " + msg.getMessageHash());
+        System.out.println("Recipient: " + msg.getRecipient());
+        System.out.println("Message: " + msg.getMessageText());
+        System.out.println("Date: " + msg.getTimestamp());
+ 
+        // Ask user what to do with the message
+        System.out.println("\nSelect action:");
+        System.out.println("1. Send Message");
+        System.out.println("2. Disregard Message");
+        System.out.println("3. Store Message to send later");
+        System.out.print("Choice: ");
+ 
+        int action = Integer.parseInt(input.nextLine());
+        System.out.println(msg.sendMessageOption(action));;
+    }
+    
+    //Main method starts
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         
@@ -156,11 +199,58 @@ public class PROG5121Part1 {
         
         //Display welcome meassage 
         System.out.println(returnLoginStatus(loginSuccess, firstName, lastName));
+        
+        //===================PART 2: QUICKCHAT====================
+        System.out.println("\nWelcome to QuickChat.");
+ 
+        // Ask how many messages the user wants to send
+        int maxMessages = 0;
+        try {
+            System.out.print("How many messages do you wish to send? ");
+            maxMessages = Integer.parseInt(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input, exiting programme.");
+            return;
+        }
+        // Menu loop - keeps running until user selects Exit
+        boolean exit = false;
+ 
+        while (!exit) {
+            System.out.println("\nSelect an Option:");
+            System.out.println("1. Send Messages");
+            System.out.println("2. Show recently sent messages");
+            System.out.println("3. Quit");
+            System.out.print("Choice: ");
+ 
+            int choice = Integer.parseInt(input.nextLine());
+ 
+            switch (choice) {
+                case 1:
+                    // Check message limit before allowing send
+                    if (Message.returnTotalMessages() < maxMessages) {
+                        sendMessage(input);
+                    } else {
+                        System.out.println("Maximum Messages Reached. You may not send more.");
+                    }
+                    break;
+ 
+                case 2:
+                    System.out.println("Coming Soon.");
+                    break;
+ 
+                case 3:
+                    exit = true;
+                    break;
+ 
+                default:
+                    System.out.println("Invalid option. Please choose 1, 2, or 3.");
+            }
+        }
+ 
+        // Show summary when user quits
+        System.out.println("\nTotal messages sent: " + Message.returnTotalMessages());
+        System.out.println(Message.printMessages());
+ 
+        input.close();
     }
 }
-
-
-
-
-
-
