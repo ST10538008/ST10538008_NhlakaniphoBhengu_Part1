@@ -17,9 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class MessageTest {
 
-    // Test message objects using assignment test data
+    // Part 2 test message objects
     private Message message1;
     private Message message2;
+
+    // Part 3 test message objects using assignment test data
+    private Message msg1;
+    private Message msg2;
+    private Message msg3;
+    private Message msg4;
 
     public MessageTest() {
     }
@@ -34,15 +40,28 @@ public class MessageTest {
 
     @BeforeEach
     public void setUp() {
-        // Test Data Task 1
+        // Part 2 test data
         message1 = new Message("+27718693002", "Hi Mike, can you join us for dinner tonight?");
-        // Test Data Task 2
         message2 = new Message("08575975889", "Hi Keegan, did you receive the payment?");
+
+        // Part 3 test data 
+        msg1 = new Message("+27834557896", "Did you get the cake?");
+        msg2 = new Message("+27838884567", "Where are you? You are late! I have asked you to be on time.");
+        msg3 = new Message("+27834484567", "Yohoooo, I am at your gate.");
+        msg4 = new Message("+27838884567", "Ok, I am leaving without you.");
+
+        // Populate arrays 
+        msg1.sendMessageOption(1); // Sent
+        msg2.sendMessageOption(3); // Stored
+        msg3.sendMessageOption(2); // Disregard
+        msg4.sendMessageOption(3); // Stored
     }
 
     @AfterEach
     public void tearDown() {
     }
+
+    // ===================== PART 2 TESTS =====================
 
     /**
      * Test of validateRecipientCell method, of class Message.
@@ -206,26 +225,25 @@ public class MessageTest {
     }
 
     /**
-     * Test of printMessages method, of class Message.
-     * No messages sent yet
+     * Test of printMessages - msg1 was sent in setUp so array is not empty
      */
     @Test
     public void testPrintMessages() {
         System.out.println("printMessages");
-        String expResult = "No messages sent yet.";
         String result = Message.printMessages();
-        assertEquals(expResult, result);
+        assertTrue(result.contains("Did you get the cake?"),
+                "printMessages should contain sent message from Part 3 setUp");
     }
 
     /**
-     * Test of returnTotalMessages method, of class Message.
+     * Test of returnTotalMessages - msg1 sent in setUp so total is at least 1
      */
     @Test
     public void testReturnTotalMessages() {
         System.out.println("returnTotalMessages");
-        int expResult = 0;
         int result = Message.returnTotalMessages();
-        assertEquals(expResult, result);
+        assertTrue(result >= 1,
+                "Total messages should be at least 1 after setUp");
     }
 
     /**
@@ -289,8 +307,98 @@ public class MessageTest {
     @Test
     public void testGetMessageNumber() {
         System.out.println("getMessageNumber");
-        // message1 is the first message created so number should be 1
         int result = message1.getMessageNumber();
         assertTrue(result >= 1, "Message number should be 1 or more");
+    }
+
+    // ===================== PART 3 TESTS =====================
+
+    /**
+     * Test sent messages array is correctly populated
+     * Test data: msg1 "Did you get the cake?" flagged as Sent
+     */
+    @Test
+    public void testSentMessagesArrayPopulated() {
+        System.out.println("sentMessages array populated");
+        boolean found = false;
+        for (Message m : Message.getSentMessages()) {
+            if (m.getMessageText().equals("Did you get the cake?")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found, "Sent messages should contain 'Did you get the cake?'");
+    }
+
+    /**
+     * Test display longest message
+     * Test data: messages 1-4
+     * Expected: "Where are you? You are late! I have asked you to be on time."
+     */
+    @Test
+    public void testDisplayLongestMessage() {
+        System.out.println("displayLongestMessage");
+        String result = Message.displayLongestMessage();
+        assertTrue(result.contains("Where are you? You are late! I have asked you to be on time."),
+                "Longest message should be msg2");
+    }
+
+    /**
+     * Test search by message ID
+     * Test data: msg1 ID
+     * Expected: returns "Did you get the cake?"
+     */
+    @Test
+    public void testSearchByMessageID() {
+        System.out.println("searchByMessageID");
+        String id = msg1.getMessageID();
+        String result = Message.searchByMessageID(id);
+        assertTrue(result.contains("Did you get the cake?"),
+                "Search by ID should return 'Did you get the cake?'");
+    }
+
+    /**
+     * Test search by recipient
+     * Test data: +27838884567
+     * Expected: returns msg2 and msg4
+     */
+    @Test
+    public void testSearchByRecipient() {
+        System.out.println("searchByRecipient");
+        String result = Message.searchByRecipient("+27838884567");
+        assertTrue(result.contains("Where are you? You are late! I have asked you to be on time."),
+                "Should find msg2 for +27838884567");
+        assertTrue(result.contains("Ok, I am leaving without you."),
+                "Should find msg5 for +27838884567");
+    }
+
+    /**
+     * Test delete message by hash
+     * Test data: msg2 hash
+     * Expected: message successfully deleted
+     */
+    @Test
+    public void testDeleteMessageByHash() {
+        System.out.println("deleteMessageByHash");
+        String hash = msg2.getMessageHash();
+        String result = Message.deleteMessageByHash(hash);
+        assertTrue(result.contains("successfully deleted."),
+                "Message should be successfully deleted");
+    }
+
+    /**
+     * Test display report 
+     * Expected: report shows Message Hash, Recipient and Message
+     */
+    @Test
+    public void testDisplayReport() {
+        System.out.println("displayReport");
+        String result = Message.displayReport();
+        assertTrue(result.contains("Message Hash:"),
+                "Report should contain Message Hash");
+        assertTrue(result.contains("Recipient:"),
+                "Report should contain Recipient");
+        assertTrue(result.contains("Message:"),
+                "Report should contain Message");
     }
 }
