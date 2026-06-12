@@ -4,6 +4,7 @@
  */
 package com.mycompany.prog5121part1;
 
+import java.util.Scanner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
+/** 
  *
  * @author Student
  */
@@ -42,8 +43,8 @@ public class PROG5121Part1Test {
     @Test
     public void testCheckUserName() {
         System.out.println("checkUserName");
-        String username = "kyle!!!";
-        boolean expResult = false;
+        String username = "kyl_1";
+        boolean expResult = true;
         boolean result = PROG5121Part1.checkUserName(username);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -56,8 +57,8 @@ public class PROG5121Part1Test {
     @Test
     public void testCheckPasswordComplexity() {
         System.out.println("checkPasswordComplexity");
-        String password = "password";
-        boolean expResult = false;
+        String password = "Ch&&sec@ke99!";
+        boolean expResult = true;
         boolean result = PROG5121Part1.checkPasswordComplexity(password);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -137,5 +138,18 @@ public class PROG5121Part1Test {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
+
+    /**
+     * Test of sendMessage method, of class PROG5121Part1.
+     */
+    @Test
+    public void testSendMessage() {
+        System.out.println("sendMessage");
+        Scanner input = null;
+        PROG5121Part1.sendMessage(input);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
     
 }
+
