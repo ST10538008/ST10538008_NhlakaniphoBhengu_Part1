@@ -166,7 +166,7 @@ This is a Java-based messaging application called **QuickChat**. The application
 | Message | "Hi Mike, can you join us for dinner tonight?" | "Hi Keegan, did you receive the payment?" |
 | Action | Send | Disregard |
 
-| Field | Part 3 Message 1 | Part 3 Message 2 | Part 3 Message 3 | Part 3 Message 5 |
+| Field | Part 3 Message 1 | Part 3 Message 2 | Part 3 Message 3 | Part 3 Message 4 |
 |-------|-----------------|-----------------|-----------------|-----------------|
 | Recipient | +27834557896 | +27838884567 | +27834484567 | +27838884567 |
 | Message | "Did you get the cake?" | "Where are you? You are late!" | "Yohoooo, I am at your gate." | "Ok, I am leaving without you." |
